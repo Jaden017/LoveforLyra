@@ -1,31 +1,21 @@
-const headers = document.querySelectorAll('.accordion-header');
+<script>
+  document.querySelectorAll('.accordion-header').forEach(header => {
+    header.addEventListener('click', function () {
+      const content = this.nextElementSibling;
+      const isActive = this.classList.contains('active');
 
-headers.forEach(header => {
-  header.addEventListener('click', () => {
-    const activeHeader = document.querySelector('.accordion-header.active');
-    
-    if (activeHeader && activeHeader !== header) {
-      activeHeader.classList.remove('active');
-      const activeContent = activeHeader.nextElementSibling;
-      activeContent.style.maxHeight = null;
-      activeContent.style.opacity = 0;
-    }
-    
-    header.classList.toggle('active');
-    const content = header.nextElementSibling;
+      // Remove active state from all headers
+      document.querySelectorAll('.accordion-header').forEach(h => h.classList.remove('active'));
+      document.querySelectorAll('.accordion-content').forEach(c => {
+        c.style.maxHeight = null;
+        c.style.opacity = 0;
+      });
 
-    if (header.classList.contains('active')) {
-      content.style.maxHeight = content.scrollHeight + "px";
-      // Small delay to trigger opacity transition after maxHeight set
-      setTimeout(() => {
+      if (!isActive) {
+        this.classList.add('active');
+        content.style.maxHeight = content.scrollHeight + 'px';
         content.style.opacity = 1;
-      }, 50);
-    } else {
-      content.style.opacity = 0;
-      // Wait for fade out, then collapse height
-      setTimeout(() => {
-        content.style.maxHeight = null;
-      }, 500);
-    }
+      }
+    });
   });
-});
+</script>
